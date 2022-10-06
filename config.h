@@ -12,10 +12,18 @@
     //Global
     #define Global 7571859109182318
     #define c_lang 6385431463
+    #define c_host 6385303139
+    #define c_ip 5863486
+    #define c_port 6385590602
+    #define c_join 6385374677
 
     typedef struct globalConfig
     {
         char lang[255];
+        int host;
+        int join;
+        char ip[16];
+        char port[6];
     } globalConfig;
 
     typedef struct gameConfig

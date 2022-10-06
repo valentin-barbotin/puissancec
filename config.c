@@ -35,7 +35,18 @@ bool setupGlobal(FILE* fd, char* data, struct globalConfig* globalConfig) {
             case c_lang:
                 strcpy(globalConfig->lang, value);
                 break;
-            
+            case c_host:
+                globalConfig->host = 1;
+                break;
+            case c_ip:
+                strcpy(globalConfig->ip, value);
+                break;
+            case c_port:
+                strcpy(globalConfig->port, value);
+                break;
+            case c_join:
+                globalConfig->join = 1;
+                break;
             default:
                 break;
         }

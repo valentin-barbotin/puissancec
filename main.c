@@ -137,6 +137,7 @@ int main(int argc, char **argv) {
         if(strcmp(argv[i],"--usage")==0){
             //Mettre une introduction pour l'usage de notre executable
             puts("Mettre une introduction pour l'usage de notre executable");
+            exit;
         }
     }
 
