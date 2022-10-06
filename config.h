@@ -2,7 +2,7 @@
 #define CONFIG_H
 
     #include <stdbool.h>
-
+    #include <stdio.h>
     #define RANDOM_BOOL rand() % 2
 
     // n char + null-terminator
@@ -12,10 +12,14 @@
     //Global
     #define Global 7571859109182318
     #define c_lang 6385431463
+    #define c_rows 6385662640
+    #define c_columns 229462173423334
 
     typedef struct globalConfig
     {
         char lang[255];
+        unsigned short rows;
+        unsigned short columns;
     } globalConfig;
 
     typedef struct gameConfig

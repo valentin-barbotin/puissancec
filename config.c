@@ -35,7 +35,12 @@ bool setupGlobal(FILE* fd, char* data, struct globalConfig* globalConfig) {
             case c_lang:
                 strcpy(globalConfig->lang, value);
                 break;
-            
+            case c_rows:
+                globalConfig->rows = atoi(value);
+                break;
+            case c_columns:
+                globalConfig->columns = atoi(value);
+                break;
             default:
                 break;
         }
@@ -50,6 +55,8 @@ bool setupGlobal(FILE* fd, char* data, struct globalConfig* globalConfig) {
  */
 void defaultConfig(gameConfig* config) {
     strcpy(config->globalConfig.lang, "en");
+    config->globalConfig.rows = 6;
+    config->globalConfig.columns = 7;
 }
 
 /**

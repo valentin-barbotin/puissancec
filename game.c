@@ -3,12 +3,14 @@
 
 #include "user.h"
 #include "config.h"
+#include "printGrille.h"
 
-void startGame(Users *users, gameConfig* config) {
+void startGame(Users *users, gameConfig* config, char **grille) {
     // afficher grille
     int     i;
     User    *user;
     unsigned short   col;
+    print_all(grille, config->globalConfig.rows, config->globalConfig.columns);
 
     // tant que pas fini
         // afficher joueur courant
