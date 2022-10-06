@@ -20,15 +20,53 @@ int main(int argc, char **argv) {
     }
 
    
+    int multiGame = 0;
+    int localGame = 0;
+
+    char *ip=calloc(16,sizeof(char));
+    char *port= calloc(6,sizeof(char));
+
     for(int i = 1; i < argc ; i++){
         if(strcmp(argv[i],"--help")==0 || strcmp(argv[i],"-?")==0){
+            //affiche HELP
             puts("-h, --host              Start a game as host");
-            puts("-i, --ip=127.0.0.1      IP to use");
+            puts("-i, --ip 127.0.0.1      IP to use");
             puts("-j, --join              Join a game");
             puts("-l, --local             Start a local game (default)");
             puts("-p, --port=3000         Port to use");
             puts("-?, --help              Give this help list");
             puts("  , --usage             Give a short usage message");
+        }
+
+        if(strcmp(argv[i],"-i")==0 || strcmp(argv[i],"--ip")==0){
+            //range dans ip l'adresse IP
+            i++;
+            strcpy(ip,argv[i]);
+            puts(ip);
+        }
+
+        if(strcmp(argv[i],"-j")==0 || strcmp(argv[i],"--join")==0){
+            //Rejoindre le jeu en multi
+            multiGame = 1;
+            printf("%d\n",multiGame);
+        }
+
+        if(strcmp(argv[i],"-l")==0 || strcmp(argv[i],"--local")==0){
+            //Rejoindre le jeu en local
+            localGame = 1;
+            printf("%d\n",localGame);
+        }
+
+        if(strcmp(argv[i],"-p")==0 || strcmp(argv[i],"--port")==0){
+            //range dans ip l'adresse IP
+            i++;
+            strcpy(port,argv[i]);
+            puts(port);
+        }
+
+        if(strcmp(argv[i],"--usage")==0){
+            //Mettre une introduction pour l'usage de notre executable
+            puts("Mettre une introduction pour l'usage de notre executable");
         }
     }
 
