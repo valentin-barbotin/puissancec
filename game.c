@@ -7,7 +7,8 @@
 void startGame(Users *users, gameConfig* config) {
     // afficher grille
     int     i;
-
+    User    *user;
+    unsigned short   col;
 
     // tant que pas fini
         // afficher joueur courant
@@ -16,14 +17,41 @@ void startGame(Users *users, gameConfig* config) {
         // verifier si gagne
         // changer joueur courant
 
-    // do
-    // {
-    //     for (i = 0; i < users->size; i++)
-    //     {
-    //         printf("Joueur %d: %s", i + 1, users->users[i].name);
-    //     }
-        
-    // } while (winner == NULL);
+    user = NULL;
+    do
+    {
+        for (i = 0; i < users->size; i++)
+        {
+            printf("Joueur %d: %s, Choisissez une colonne: \n", i + 1, users->users[i].name);
+
+            do
+            {
+                scanf("%hu", &col);
+            } while (col < 1 || col > 10);
+            // } while (col < 1 || col > config->gameConfig.columns);
+
+            // si colonne pleine, redemander une colonne
+            
+            // placeBlock(i, col);
+            printf("Vous avez choisi la colonne %hu\n", col);
+
+            // prendre le bas de la colonne
+            // si case vide
+                // placer pion
+                // verifier si gagne
+                // changer joueur courant
+            // sinon
+                // si colonne pleine
+                    // redemander une colonne
+                // regarder case du dessus
+                // si case vide
+                    // placer pion
+                    // verifier si gagne
+                    // changer joueur courant
+                // sinon
+                    //etc
+        }
+    } while (user == NULL);
     
 }
 
