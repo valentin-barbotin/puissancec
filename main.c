@@ -47,7 +47,11 @@ int main(int argc, char **argv) {
                 if (argv[i][j] == 'i' && argv[i][j + 1] == 'p') {
 
                     puts("IP TROUVE");
-                    ipExiste = ipExiste == 0 ? 1 : 0;
+                    if(ipExiste != 0){
+                        puts("VOUS CONFIGUREZ DEJA L'IP");
+                        exit;
+                    }
+                    ipExiste = 1;
                     int findEg = 0;
 
                     //CHERCHE LA VALEUR '=' ET LA POSITION
@@ -59,12 +63,19 @@ int main(int argc, char **argv) {
                     for (int k = findEg; k < argSize; k++) {
                         ip[k - findEg] = argv[i][k + 1];
                     }
+
+                    puts(ip);
                 }
 
                 //TROUVER SI IL Y A PORT
                 if (argv[i][j] == 'p' && argv[i][j + 1] == 'o') {
 
                     puts("PORT TROUVE");
+                    if(portExiste != 0){
+                        puts("VOUS CONFIGUREZ DEJA LE PORT");
+                        exit;
+                    }
+                    portExiste = 1;
                     int findEg = 0;
 
                     //CHERCHE LA VALEUR '=' ET LA POSITION
@@ -77,36 +88,52 @@ int main(int argc, char **argv) {
                         port[k - findEg] = argv[i][k + 1];
                     }
 
+                    puts(port);
                 }
             }
         }
 
+        //VERIFIE SI ARGV EST I
         if(strcmp(argv[i],"-i")==0){
             //range dans ip l'adresse IP
+            if(ipExiste != 0){
+                puts("VOUS CONFIGUREZ DEJA L'IP");
+                exit;
+            }
+            ipExiste = 1;
             i++;
             strcpy(ip,argv[i]);
-            puts(ip);
+            i++;
         }
 
+        //VERIFIE SI ARGV EST join
         if(strcmp(argv[i],"-j")==0 || strcmp(argv[i],"--join")==0){
             //Rejoindre le jeu en multi
             multiGame = 1;
             printf("%d\n",multiGame);
         }
 
+        //VERIFIE SI ARGV EST local
         if(strcmp(argv[i],"-l")==0 || strcmp(argv[i],"--local")==0){
             //Rejoindre le jeu en local
             localGame = 1;
             printf("%d\n",localGame);
         }
 
+        //VERIFIE SI ARGV EST P
         if(strcmp(argv[i],"-p")==0){
             //range dans ip l'adresse IP
+            if(portExiste != 0){
+                puts("VOUS CONFIGUREZ DEJA LE PORT");
+                exit;
+            }
+            portExiste = 1;
             i++;
             strcpy(port,argv[i]);
-            puts(port);
+            i++;
         }
 
+        //VERIFIE SI ARGV EST USAGE
         if(strcmp(argv[i],"--usage")==0){
             //Mettre une introduction pour l'usage de notre executable
             puts("Mettre une introduction pour l'usage de notre executable");
