@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include "printGrille.h"
 
 #include "utils.h"
 #include "config.h"
