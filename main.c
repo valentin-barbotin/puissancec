@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "printGrille.h"
+#include <string.h>
 
 #include "utils.h"
 #include "config.h"
@@ -18,7 +19,18 @@ int main(int argc, char **argv) {
         return EXIT_FAILURE;
     }
 
-    //TODO: use cli arguments to override config file
+   
+    for(int i = 1; i < argc ; i++){
+        if(strcmp(argv[i],"--help")==0 || strcmp(argv[i],"-?")==0){
+            puts("-h, --host              Start a game as host");
+            puts("-i, --ip=127.0.0.1      IP to use");
+            puts("-j, --join              Join a game");
+            puts("-l, --local             Start a local game (default)");
+            puts("-p, --port=3000         Port to use");
+            puts("-?, --help              Give this help list");
+            puts("  , --usage             Give a short usage message");
+        }
+    }
 
     printf("Langue: %s\n", config.globalConfig.lang);
 
