@@ -3,10 +3,6 @@
 #include <string.h>
 
 
-//Prototypes
-void removeLineFeed(char* str);
-const unsigned long hash(const char* str);
-
 /**
  * Description
  * @todo handle differents breaklines

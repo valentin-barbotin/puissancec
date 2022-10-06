@@ -23,17 +23,28 @@ int main(int argc, char **argv) {
     printf("Langue: %s\n", config.globalConfig.lang);
 
     puts("\033[1;31mHello World!\033[0m");
-    for (int i = BLACK; i < COLOR_COUNT; i++)
-    {
-        printColoredChar(i, 'A' + i);
-    }
-    
+    // for (int i = BLACK; i < COLOR_COUNT; i++)
+    // {
+    //     printColoredChar(i, 'A' + i);
+    // }
 
     Users *users = getUsers();
 
-    createUser("valentin");
-    createUser("fanny");
-    createUser("kenny");
+    char name[SIZE_DATA];
+
+    puts("Entrer le nom du joueur 1");
+    fgets(name, SIZE_DATA, stdin);
+    removeLineFeed(name);
+
+    //TODO check si username valide
+    //TODO check si username deja pris
+    createUser(name);
+
+    puts("Entrer le nom du joueur 2");
+    fgets(name, SIZE_DATA, stdin);
+    removeLineFeed(name);
+
+    createUser(name);
 
     for (int i = 0; i < users->size; i++)
     {
@@ -49,8 +60,7 @@ int main(int argc, char **argv) {
     grille = init_grille(rows, columns);
     print_all(grille, rows, columns);
 
-    free(grille);
 
-    return 0;
-
+    //tmp
+    startGame(users, &config);
 }

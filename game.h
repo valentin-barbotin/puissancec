@@ -7,6 +7,7 @@
 void            placeBlock(int row, int col);
 User*           isBlock(int row, int col);
 
+void            startGame(Users *users, gameConfig* config);
 
 #endif // MACRO
 
