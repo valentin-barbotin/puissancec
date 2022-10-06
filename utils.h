@@ -5,7 +5,11 @@
 #define true 1
 #define false 0
 
-void printColoredChar(char c, int color);
+void removeLineFeed(char* str);
+const unsigned long hash(const char* str);
+int doesInclude(char** array, const char* str, const int size);
+char* readFile(const char* src);
+char* removeSuffix(char* src, char* suffix);
 
 #endif // MACRO
 

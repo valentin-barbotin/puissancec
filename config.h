@@ -1,6 +1,8 @@
 #if !defined(CONFIG_H)
 #define CONFIG_H
 
+    #include <stdbool.h>
+
     #define RANDOM_BOOL rand() % 2
 
     // n char + null-terminator
@@ -22,7 +24,7 @@
     } gameConfig;
 
     //Prototypes
-    int readConfig();
+    int readConfig(gameConfig *config);
 
     bool setupGlobal(FILE* fd, char* data, struct globalConfig* globalConfig);
     void defaultConfig(gameConfig* config);
