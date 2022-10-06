@@ -18,6 +18,8 @@ Users* createUsers() {
     Users   *users;
 
     users = malloc(sizeof(Users));
+    users->size = 0;
+
     if (users == NULL) {
         puts("Error: malloc failed");
         exit(1);
@@ -29,8 +31,6 @@ Users* createUsers() {
         exit(1);
     }
 
-
-    users->size = 0;
     return users;
 }
 

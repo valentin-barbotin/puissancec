@@ -8,36 +8,7 @@
 
 #include "user.h"
 #include "utils.c"
-
-#define RANDOM_BOOL rand() % 2
-
-// n char + null-terminator
-#define SIZE_DATA 101
-// all with [] around
-
-//Global
-#define Global 7571859109182318
-#define c_lang 6385431463
-
-
-typedef struct globalConfig
-{
-    char lang[255];
-} globalConfig;
-
-
-typedef struct gameConfig
-{
-    struct globalConfig globalConfig;
-} gameConfig;
-
-//Prototypes
-bool setupGlobal(FILE* fd, char* data, struct globalConfig* globalConfig);
-int readConfig();
-
-gameConfig config;
-
-#define CONFIG_GLOBAL config.globalConfig
+#include "config.h"
 
 /**
  * Parse global settings from file descriptor and update the globalConfig struct using pointers
@@ -73,12 +44,21 @@ bool setupGlobal(FILE* fd, char* data, struct globalConfig* globalConfig) {
     return true;
 }
 
+/**
+ * Fill the gameConfig struct with default values
+ * @param {gameConfig*} game configuration of the game
+ * @return void
+ */
+void defaultConfig(gameConfig* config) {
+    strcpy(config->globalConfig.lang, "en");
+}
 
 /**
  * Try to read game configuration file, then parse to parse it
+ * @param {gameConfig*} config struct
  * @return {int} 0 on success, and 1 in case of failure
  */
-int readConfig() {
+int readConfig(gameConfig *config) {
     char* configFile = "../config.ini";
     FILE* fd = fopen(configFile, "r");
     if (fd == NULL) {
@@ -102,10 +82,9 @@ int readConfig() {
         {
             case Global:
                 puts("Setup global");
-                success = setupGlobal(fd, data, &config.globalConfig);
+                success = setupGlobal(fd, data, &config->globalConfig);
                 break;
             default:
-                puts("DEFAULT");
                 break;
         }
         if (!success) {
