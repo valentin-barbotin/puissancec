@@ -33,7 +33,7 @@ int main(int argc, char **argv) {
             puts("-i, --ip 127.0.0.1      IP to use");
             puts("-j, --join              Join a game");
             puts("-l, --local             Start a local game (default)");
-            puts("-p, --port=3000         Port to use");
+            puts("-p, --port 3000         Port to use");
             puts("-?, --help              Give this help list");
             puts("  , --usage             Give a short usage message");
         }
