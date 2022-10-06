@@ -6,6 +6,7 @@
 #include "config.h"
 #include "user.h"
 #include "game.h"
+#include "colors.h"
 
 int main(int argc, char **argv) {
 
@@ -22,6 +23,11 @@ int main(int argc, char **argv) {
     printf("Langue: %s\n", config.globalConfig.lang);
 
     puts("\033[1;31mHello World!\033[0m");
+    for (int i = BLACK; i < COLOR_COUNT; i++)
+    {
+        printColoredChar(i, 'A' + i);
+    }
+    
 
     Users *users = getUsers();
 
