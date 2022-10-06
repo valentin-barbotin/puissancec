@@ -3,7 +3,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <dirent.h>
-#include <sys/dir.h>
 #include <errno.h>
 
 #include "user.h"

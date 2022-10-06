@@ -1,4 +1,0 @@
-"C:\Program Files\JetBrains\CLion 2022.2.3\bin\cmake\win\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - MinGW Makefiles" -S C:\Users\fanny\Documents\PuissanceC -B C:\Users\fanny\Documents\PuissanceC\cmake-build-debug
--- Configuring done
--- Generating done
--- Build files have been written to: C:/Users/fanny/Documents/puissancec/cmake-build-debug
