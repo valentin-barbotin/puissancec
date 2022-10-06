@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include "printGrille.h"
 #include <string.h>
-
 #include "utils.h"
 #include "config.h"
 #include "user.h"
@@ -18,27 +17,71 @@ int main(int argc, char **argv) {
         fprintf(stderr, "Erreur lors de la lecture du fichier de configuration");
         return EXIT_FAILURE;
     }
-
    
     int multiGame = 0;
     int localGame = 0;
+    int ipExiste = 0;
+    int portExiste = 0;
 
     char *ip=calloc(16,sizeof(char));
     char *port= calloc(6,sizeof(char));
 
+    //BOUCLE SUR LES PARAMETRES DES EXECUTABLES
     for(int i = 1; i < argc ; i++){
         if(strcmp(argv[i],"--help")==0 || strcmp(argv[i],"-?")==0){
             //affiche HELP
             puts("-h, --host              Start a game as host");
-            puts("-i, --ip 127.0.0.1      IP to use");
+            puts("-i, --ip=127.0.0.1      IP to use");
             puts("-j, --join              Join a game");
             puts("-l, --local             Start a local game (default)");
-            puts("-p, --port 3000         Port to use");
+            puts("-p, --port=3000         Port to use");
             puts("-?, --help              Give this help list");
             puts("  , --usage             Give a short usage message");
         }
 
-        if(strcmp(argv[i],"-i")==0 || strcmp(argv[i],"--ip")==0){
+        unsigned long long argSize = strlen(argv[i]);
+
+        if(argSize>2){
+            for(int j = 0;j<argSize;j++) {
+                //TROUVER SI IL Y A IP
+                if (argv[i][j] == 'i' && argv[i][j + 1] == 'p') {
+
+                    puts("IP TROUVE");
+                    ipExiste = ipExiste == 0 ? 1 : 0;
+                    int findEg = 0;
+
+                    //CHERCHE LA VALEUR '=' ET LA POSITION
+                    while (argv[i][findEg] != '=' && findEg < argSize) {
+                        findEg++;
+                    }
+
+                    //REMPLIS LE TABLEAU IP
+                    for (int k = findEg; k < argSize; k++) {
+                        ip[k - findEg] = argv[i][k + 1];
+                    }
+                }
+
+                //TROUVER SI IL Y A PORT
+                if (argv[i][j] == 'p' && argv[i][j + 1] == 'o') {
+
+                    puts("PORT TROUVE");
+                    int findEg = 0;
+
+                    //CHERCHE LA VALEUR '=' ET LA POSITION
+                    while (argv[i][findEg] != '=' && findEg < argSize) {
+                        findEg++;
+                    }
+
+                    //REMPLIS LE TABLEAU PORT
+                    for (int k = findEg; k < argSize; k++) {
+                        port[k - findEg] = argv[i][k + 1];
+                    }
+
+                }
+            }
+        }
+
+        if(strcmp(argv[i],"-i")==0){
             //range dans ip l'adresse IP
             i++;
             strcpy(ip,argv[i]);
@@ -57,7 +100,7 @@ int main(int argc, char **argv) {
             printf("%d\n",localGame);
         }
 
-        if(strcmp(argv[i],"-p")==0 || strcmp(argv[i],"--port")==0){
+        if(strcmp(argv[i],"-p")==0){
             //range dans ip l'adresse IP
             i++;
             strcpy(port,argv[i]);
