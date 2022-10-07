@@ -12,7 +12,9 @@
 
 #include "config.h"
 #include "server.h"
+#include "game.h"
 #include "user.h"
+#include "printGrille.h"
 
 void sendPromptToClient(int clientSocket, char *message) {
     uint32_t dataLen = strlen(message);
@@ -32,7 +34,9 @@ int enoughPlayers(gameConfig *config) {
     return (getUsers()->size == config->globalConfig.users) ? 1 : 0;
 }
 
-void main_server(gameConfig *config) {
+void main_server(gameConfig *config, char **grid) {
+    printf("Server started on port %s\n", config->globalConfig.port);
+    printf("Waiting for %d players\n", config->globalConfig.users);
     struct sockaddr_in srv, client;
     int sd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 
@@ -48,7 +52,7 @@ void main_server(gameConfig *config) {
     listen(sd, 10);
 
     int clientId = 1;
-    short *turn = (short*) createSHM();
+    unsigned int *turn = (unsigned int*) createSHM();
     *turn = 0;
 
     do
@@ -61,41 +65,54 @@ void main_server(gameConfig *config) {
         }
         clientId++;
 
-        int forked = fork();
-        if (forked == 0) { //handle single client
-            printf("[Child] New client with id %d\n", clientId);
-            handleClient(clientSocket, clientId, config, turn);
-            return;
-        }
+        // int forked = fork();
+        // if (forked == 0) { //handle single client
+            // printf("[Child] New client with id %d\n", clientId);
+            handleClient(clientSocket, clientId, config, turn, grid);
+            // return;
+        // }
         printf("[Main] New client with id %d\n", clientId);
     } while (1);
 }
 
-void handleClient(int clientSocket, int client, gameConfig *config, short *turn) {
+void handleClient(int clientSocket, int client, gameConfig *config, short *turn, char **grid) {
     char data[500] = {0};
-    char promptClient[1000];
+    char promptClient[2000] = {0};
     int  valid = 0;
     User    *currentUser;
     int    currentUserOrder;
 
     unsigned int length = 0;
     ssize_t resSize = 0;
-    char *welcomeMsg = "Welcome to the game";
+    sprintf(data, "%s", "Welcome to the game");
 
-    uint32_t dataLen = strlen(welcomeMsg);
+    if (config->globalConfig.users != getUsers()->size) {
+        sprintf(data, "%s", "Welcome to the game");
+    } else {
+        sprintf(data, "%s", "The game is full");
+        uint32_t dataLen = strlen(data);
+        uint32_t hostToNetInt = htonl(dataLen);
+        send(clientSocket, &hostToNetInt, sizeof(hostToNetInt), 0);
+        send(clientSocket, data, dataLen, 0);
+        close(clientSocket);
+    }
+
+    uint32_t dataLen = strlen(data);
     uint32_t hostToNetInt = htonl(dataLen);
     send(clientSocket, &hostToNetInt, sizeof(hostToNetInt), 0);
-    send(clientSocket, welcomeMsg, dataLen, 0);
+    send(clientSocket, data, dataLen, 0);
 
     do
     {
-        strcpy(promptClient, welcomeMsg);
+        strcpy(promptClient, data);
         if (!valid) {
-            strcpy(promptClient, welcomeMsg);
+            strcpy(promptClient, data);
         }
         if (enoughPlayers(config)) {
             if (isMyTurn(currentUser)) {
-                strcpy(promptClient, "Choisir une colonne: ");
+                promptClient[0] = '\0';
+                print_all_multi(grid, config->globalConfig.rows, config->globalConfig.columns, promptClient);
+                strcat(promptClient, "\nChoisir une colonne: ");
             } else {
                 strcpy(promptClient, "TODO: wait for opponent");
             }
@@ -117,8 +134,22 @@ void handleClient(int clientSocket, int client, gameConfig *config, short *turn)
 
         if ((enoughPlayers(config)) && (isMyTurn(currentUser))) {
             // placer jeton
+            printf("data: %s\n", data);
+            int column = atoi(data);
+            if (column >= 1 || column <= config->globalConfig.columns) {
+                promptClient[0] = '\0';
+                game2(getUsers(), config, grid, column, currentUserOrder, getUsers(), promptClient);
 
-            *turn += 1;
+                dataLen = strlen(promptClient);
+                hostToNetInt = htonl(dataLen);
+                send(clientSocket, &hostToNetInt, sizeof(hostToNetInt), 0);
+                send(clientSocket, data, dataLen, 0);
+
+                *turn += 1;
+                if (turn == getUsers()->size) {
+                    *turn = 0;
+                }
+            }
         }
 
         if (!valid) {

@@ -51,6 +51,9 @@ User* createUser(char* name, char token) {
     Users   *users;
     char    *newName;
     char tokenUser;
+    static  color;
+
+
 
     users = getUsers();
 

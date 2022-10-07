@@ -53,6 +53,9 @@ bool setupGlobal(FILE* fd, char* data, struct globalConfig* globalConfig) {
             case c_columns:
                 globalConfig->columns = atoi(value);
                 break;
+            case c_serie:
+                globalConfig->serie = atoi(value);
+                break;
             default:
                 break;
         }
@@ -67,6 +70,11 @@ bool setupGlobal(FILE* fd, char* data, struct globalConfig* globalConfig) {
  */
 void defaultConfig(gameConfig* config) {
     strcpy(config->globalConfig.lang, "en");
+    strcpy(config->globalConfig.ip, "127.0.0.1");
+    strcpy(config->globalConfig.port, "8080");
+    config->globalConfig.host = 1;
+    config->globalConfig.users = 2;
+    config->globalConfig.join = 0;
     config->globalConfig.rows = 6;
     config->globalConfig.columns = 7;
 }

@@ -21,15 +21,15 @@
 #include "client.h"
 #include "server.h"
 
-int verifChara(char cara){
-    if(!(isalpha(cara))){
+int verifChara(char cara) {
+    if (!(isalpha(cara))) {
         puts("Characteres spéciaux non autorisés");
         return 0;
     }
     Users *users = getUsers();
 
-    for(int k = 0 ; k<users->size;k++){
-        if(users->users[k].token == cara){
+    for (int k = 0 ; k<users->size;k++) {
+        if (users->users[k].token == cara) {
             puts("Symbole déjà utilisé");
             return 0;
         }
@@ -39,6 +39,8 @@ int verifChara(char cara){
 }
 
 int main(int argc, char **argv) {
+    printf("%lu\n", hash("serie"));
+
     // fill gameConfig using config file
     gameConfig config;
     defaultConfig(&config);
@@ -51,8 +53,8 @@ int main(int argc, char **argv) {
     int ipExiste = 0;
     int portExiste = 0;
 
-    char *ip=calloc(16,sizeof(char));
-    char *port= calloc(6,sizeof(char));
+    char *ip = calloc(16,sizeof(char));
+    char *port = calloc(6,sizeof(char));
 
     //BOUCLE SUR LES PARAMETRES DES EXECUTABLES
     for(int i = 1; i < argc ; i++){
@@ -193,77 +195,63 @@ int main(int argc, char **argv) {
 
     Users *users = getUsers();
 
-    char name[SIZE_DATA];
-    char token1;
-    char token2;
-    char token[5];
-
-    puts("Entrer le nom du joueur 1");
-    fflush(stdin);
-    fgets(name, SIZE_DATA, stdin);
-    puts("\nEntrer le symbole du joueur 1");
-    fflush(stdin);
-    fgets(token, 2, stdin);
-    removeLineFeed(name);
-    fflush(stdin);
-    puts("Entrer le token du joueur 1");
-    token1 = (char)fgetc(stdin);
-    fflush(stdin);
-    while(verifChara(token1) == 0){
-        puts("Entrer le token du joueur 1");
-        token1 = (char)fgetc(stdin);
-        fflush(stdin);
-    }
-
-    //TODO check si username valide
-    //TODO check si username deja pris
-    createUser(name,token1);
-    createUser(name, *token);
-    puts("\nEntrer le nom du joueur 2");
-    fflush(stdin);
-    fgets(name, SIZE_DATA, stdin);
-    puts("\nEntrer le symbole du joueur 2");
-    fflush(stdin);
-    fgets(token, 2, stdin);
-
     if (config.globalConfig.join) {
         main_client(&config);
         return 0;
     }
 
+    char **grille = init_grille(&config);
+    // print_all(grille, config.globalConfig.rows, config.globalConfig.columns);
+
     // heberger une partie
     if (config.globalConfig.host) {
         // start as a server
-        main_server(&config);
+        main_server(&config, grille);
         return 0;
     }
 
+    char name[SIZE_DATA];
+    char token;
+    // char token[5];
+
+    puts("Entrer le nom du joueur 1");
+    fgets(name, SIZE_DATA, stdin);
+    fflush(stdin);
+    removeLineFeed(name);
+
+    do
+    {
+        puts("Entrer le token du joueur 1");
+        token = (char) fgetc(stdin);
+        fgetc(stdin);
+        fflush(stdin);
+    } while (verifChara(token) == 0);
+    
+    //TODO check si username valide
+    //TODO check si username deja pris
+    createUser(name, token);
+
     puts("Entrer le nom du joueur 2");
     fgets(name, SIZE_DATA, stdin);
+    fflush(stdin);
     removeLineFeed(name);
-    fflush(stdin);
-    puts("Entrer le token du joueur 2");
-    token2 = (char)fgetc(stdin);
-    fflush(stdin);
 
-    while(verifChara(token2) == 0){
+    do
+    {
         puts("Entrer le token du joueur 2");
-        token2 = (char)fgetc(stdin);
+        token = (char) fgetc(stdin);
+        fgetc(stdin);
         fflush(stdin);
-    }
-    createUser(name, *token);
-
-    createUser(name,token2);
+    } while (verifChara(token) == 0);
+    
+    //TODO check si username valide
+    //TODO check si username deja pris
+    createUser(name, token);
 
     for (int i = 0; i < users->size; i++)
     {
         puts(users->users[i].name);
     }
-
-
-    char ** grille = NULL;
-    grille = init_grille(&config);
-    //tmp
 
     startGame(users, &config, grille);
 }

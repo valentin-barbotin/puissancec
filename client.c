@@ -62,9 +62,9 @@ void main_client(gameConfig *config) {
             perror("bye");
             exit(1);
         };
-        printf("resSize: %zd\n", resSize);
+        // printf("resSize: %zd\n", resSize);
         sizeToReceive = ntohl(sizeToReceive);
-        printf("sizeToReceive: %u\n", sizeToReceive);
+        // printf("sizeToReceive: %u\n", sizeToReceive);
         if (sizeToReceive > 0) {
             puts("Must receive data, waiting..");
             memset(data, 0, 0);
@@ -73,7 +73,7 @@ void main_client(gameConfig *config) {
                 exit(1);
             };
             data[sizeToReceive] = '\0';
-            printf("resSize: %zd\n", resSize);
+            // printf("resSize: %zd\n", resSize);
             // puts(data);
         }
 

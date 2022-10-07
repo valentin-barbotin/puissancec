@@ -8,7 +8,7 @@
 #include "config.h"
 
 char ** init_grille(gameConfig* config);
-void print_grille(char ** grille, int rows, int columns);
 void print_all(char ** grille, int rows, int columns);
+void print_all_multi(char ** grille, int rows, int columns, char *output);
 
 #endif //PUISSANCEC_PRINTGRILLE_H
