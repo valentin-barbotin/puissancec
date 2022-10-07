@@ -54,6 +54,7 @@ int main(int argc, char **argv) {
             puts("-p, --port=3000         Port to use");
             puts("-?, --help              Give this help list");
             puts("  , --usage             Give a short usage message");
+            return 1;
         }
 
         //TAILLE CHAINE CHARA DE L'ARGUMENT
@@ -112,7 +113,7 @@ int main(int argc, char **argv) {
             //range dans ip l'adresse IP
             if(ipExiste != 0){
                 puts("VOUS CONFIGUREZ DEJA L'IP");
-                exit;
+                return 1;
             }
             ipExiste = 1;
             i++;
@@ -126,9 +127,11 @@ int main(int argc, char **argv) {
 
             puts("Combien de joueur voulez-vous ?");
             int nbJoueurs = 0;
-            while(nbJoueurs<2 || nbJoueurs>4){
-                puts("Le nombre de joueur doit être supérieur à 2 mais inférieur à 4");
+            while(nbJoueurs<2){
+                puts("Le nombre de joueur doit etre superieur a 2");
+                fflush(stdin);
                 nbJoueurs = fgetc(stdin);
+                fflush(stdin);
             }
             config.globalConfig.users = nbJoueurs;
         }
@@ -162,7 +165,7 @@ int main(int argc, char **argv) {
         if(strcmp(argv[i],"--usage")==0){
             //Mettre une introduction pour l'usage de notre executable
             puts("Mettre une introduction pour l'usage de notre executable");
-            exit;
+            return 1;
         }
     }
 
@@ -185,6 +188,7 @@ int main(int argc, char **argv) {
     puts("Entrer le nom du joueur 1");
     fgets(name, SIZE_DATA, stdin);
     removeLineFeed(name);
+    fflush(stdin);
     puts("Entrer le token du joueur 1");
     token1 = (char)fgetc(stdin);
     fflush(stdin);
@@ -200,8 +204,8 @@ int main(int argc, char **argv) {
 
     puts("Entrer le nom du joueur 2");
     fgets(name, SIZE_DATA, stdin);
-    fflush(stdin);
     removeLineFeed(name);
+    fflush(stdin);
     puts("Entrer le token du joueur 2");
     token2 = (char)fgetc(stdin);
     fflush(stdin);
