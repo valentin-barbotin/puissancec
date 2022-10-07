@@ -20,8 +20,8 @@ void removeLineFeed(char* str) {
  * @param {const char* str} the source string
  * @return {const unsigned long} the immutable generated hash
  */
-const unsigned long hash(const char* str) {
-    unsigned long hash = 5381;
+const unsigned long long hash(const char* str) {
+    unsigned long long hash = 5381;
     int c;
 
     while ((c = *str++))

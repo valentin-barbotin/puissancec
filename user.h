@@ -2,7 +2,7 @@
 #define USER_H
 
 typedef struct User {
-    char *token;
+    char token;
     char *name;
     char *placedToken;
 } User;
@@ -13,7 +13,7 @@ typedef struct Users
     unsigned int    size;
 } Users;
 
-User*           createUser(char* name);
+User*           createUser(char* name, char token);
 Users*          createUsers();
 Users*          getUsers();
 

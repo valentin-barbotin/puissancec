@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-
 #include "user.h"
 
 Users* getUsers() {
@@ -36,9 +35,10 @@ Users* createUsers() {
 }
 
 
-User* createUser(char* name) {
+User* createUser(char* name, char token) {
     Users   *users;
     char    *newName;
+    char tokenUser;
 
     users = getUsers();
 
@@ -55,7 +55,7 @@ User* createUser(char* name) {
     }
 
     strcpy(newName, name);
-
+    users->users[users->size].token = token;
     users->users[users->size].name = newName;
     users->size++;
     return NULL;
