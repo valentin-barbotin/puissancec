@@ -15,7 +15,7 @@ char ** init_grille(gameConfig* config){
     for (int i = 0; i < rows ; ++i) {
         grille[i] = malloc( columns*sizeof(char) );
         for (int j = 0; j < columns; ++j) {
-            grille[i][j]='X';
+            grille[i][j]=' ';
         }
     }
     return grille;
@@ -53,5 +53,6 @@ void print_all(char ** grille, int rows, int columns){
             printf("   0%d  ", j);
         }
     }
+    printf("\n");
 }
 

@@ -31,20 +31,29 @@ int main(int argc, char **argv) {
     Users *users = getUsers();
 
     char name[SIZE_DATA];
+    char token[5];
 
     puts("Entrer le nom du joueur 1");
+    fflush(stdin);
     fgets(name, SIZE_DATA, stdin);
+    puts("\nEntrer le symbole du joueur 1");
+    fflush(stdin);
+    fgets(token, 2, stdin);
     removeLineFeed(name);
 
     //TODO check si username valide
     //TODO check si username deja pris
-    createUser(name);
-
-    puts("Entrer le nom du joueur 2");
+    createUser(name, *token);
+    puts("\nEntrer le nom du joueur 2");
+    fflush(stdin);
     fgets(name, SIZE_DATA, stdin);
+    puts("\nEntrer le symbole du joueur 2");
+    fflush(stdin);
+    fgets(token, 2, stdin);
+
     removeLineFeed(name);
 
-    createUser(name);
+    createUser(name, *token);
 
     for (int i = 0; i < users->size; i++)
     {
