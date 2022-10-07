@@ -1,8 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/mman.h>
+#include <sys/ipc.h>
 
 #include "user.h"
+
+void *createSHM() {
+    return mmap(NULL, sizeof(Users), PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);
+}
 
 Users* getUsers() {
     static Users *users;
@@ -17,7 +23,12 @@ Users* getUsers() {
 Users* createUsers() {
     Users   *users;
 
-    users = malloc(sizeof(Users));
+    users = (Users*) createSHM();
+    if (users == MAP_FAILED) {
+        perror("Can't create shared memory");
+        exit(1);
+    };
+
     users->size = 0;
 
     if (users == NULL) {
@@ -25,7 +36,8 @@ Users* createUsers() {
         exit(1);
     }
 
-    users->users = malloc(sizeof(User) * users->size);
+    users->users = malloc(sizeof(User) * 100); //TODO
+    // users->users = malloc(sizeof(User) * users->size);
     if (users->users == NULL) {
         puts("Error: malloc failed");
         exit(1);
@@ -42,11 +54,11 @@ User* createUser(char* name, char token) {
 
     users = getUsers();
 
-    users->users = realloc(users->users, sizeof(User) * (users->size + 1));
-    if (users->users == NULL) {
-        puts("Error: malloc failed");
-        exit(1);
-    }
+    // users->users = realloc(users->users, sizeof(User) * (users->size + 1));
+    // if (users->users == NULL) {
+    //     puts("Error: malloc failed");
+    //     exit(1);
+    // }
 
     newName = malloc(sizeof(char) * (strlen(name) + 1));
     if (newName == NULL) {

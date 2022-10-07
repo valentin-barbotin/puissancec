@@ -1,13 +1,25 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include <ctype.h>
-#include "printGrille.h"
 #include <string.h>
+#include <ctype.h>
+
+//Socket
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <sys/ipc.h>
+#include <sys/mman.h>
+#include <unistd.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+
+#include "printGrille.h"
 #include "utils.h"
 #include "config.h"
 #include "user.h"
 #include "game.h"
 #include "colors.h"
+#include "client.h"
+#include "server.h"
 
 int verifChara(char cara){
     if(!(isalpha(cara))){
@@ -27,7 +39,6 @@ int verifChara(char cara){
 }
 
 int main(int argc, char **argv) {
-
     // fill gameConfig using config file
     gameConfig config;
     defaultConfig(&config);
@@ -65,7 +76,7 @@ int main(int argc, char **argv) {
                 if (argv[i][j] == 'i' && argv[i][j + 1] == 'p') {
                     if(ipExiste != 0){
                         puts("VOUS CONFIGUREZ DEJA L'IP");
-                        exit;
+                        return 1;
                     }
                     ipExiste = 1;
                     int findEg = 0;
@@ -87,7 +98,7 @@ int main(int argc, char **argv) {
                 if (argv[i][j] == 'p' && argv[i][j + 1] == 'o') {
                     if(portExiste != 0){
                         puts("VOUS CONFIGUREZ DEJA LE PORT");
-                        exit;
+                        return 1;
                     }
                     portExiste = 1;
                     int findEg = 0;
@@ -112,7 +123,7 @@ int main(int argc, char **argv) {
             //range dans ip l'adresse IP
             if(ipExiste != 0){
                 puts("VOUS CONFIGUREZ DEJA L'IP");
-                exit;
+                return 1;
             }
             ipExiste = 1;
             i++;
@@ -151,7 +162,7 @@ int main(int argc, char **argv) {
             //range dans ip l'adresse IP
             if(portExiste != 0){
                 puts("VOUS CONFIGUREZ DEJA LE PORT");
-                exit;
+                return 1;
             }
             portExiste = 1;
             i++;
@@ -162,7 +173,7 @@ int main(int argc, char **argv) {
         if(strcmp(argv[i],"--usage")==0){
             //Mettre une introduction pour l'usage de notre executable
             puts("Mettre une introduction pour l'usage de notre executable");
-            exit;
+            return 1;
         }
     }
 
@@ -197,6 +208,18 @@ int main(int argc, char **argv) {
     //TODO check si username valide
     //TODO check si username deja pris
     createUser(name,token1);
+
+    if (config.globalConfig.join) {
+        main_client(&config);
+        return 0;
+    }
+
+    // heberger une partie
+    if (config.globalConfig.host) {
+        // start as a server
+        main_server(&config);
+        return 0;
+    }
 
     puts("Entrer le nom du joueur 2");
     fgets(name, SIZE_DATA, stdin);

@@ -36,7 +36,7 @@ bool setupGlobal(FILE* fd, char* data, struct globalConfig* globalConfig) {
                 strcpy(globalConfig->lang, value);
                 break;
             case c_host:
-                globalConfig->host = 1;
+                globalConfig->host = atoi(value);
                 break;
             case c_ip:
                 strcpy(globalConfig->ip, value);
@@ -45,7 +45,7 @@ bool setupGlobal(FILE* fd, char* data, struct globalConfig* globalConfig) {
                 strcpy(globalConfig->port, value);
                 break;
             case c_join:
-                globalConfig->join = 1;
+                globalConfig->join = atoi(value);
                 break;
             default:
                 break;
@@ -72,7 +72,11 @@ int readConfig(gameConfig *config) {
     char* configFile = "../config.ini";
     FILE* fd = fopen(configFile, "r");
     if (fd == NULL) {
-        return EXIT_FAILURE;
+        configFile = "./config.ini";
+        fd = fopen(configFile, "r");
+        if (fd == NULL) {
+            return EXIT_FAILURE;
+        }
     }
 
     // to define

@@ -16,6 +16,7 @@ typedef struct Users
 User*           createUser(char* name, char token);
 Users*          createUsers();
 Users*          getUsers();
+void            *createSHM();
 
 #endif // MACRO
 
