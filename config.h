@@ -16,10 +16,12 @@
     #define c_ip 5863486
     #define c_port 6385590602
     #define c_join 6385374677
+    #define c_users 210730549111
 
     typedef struct globalConfig
     {
         char lang[255];
+        unsigned short users;
         int host;
         int join;
         char ip[16];

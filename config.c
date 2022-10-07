@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include <dirent.h>
 #include <errno.h>
-
 #include "user.h"
 #include "utils.c"
 #include "config.h"
@@ -12,7 +11,8 @@
 /**
  * Parse global settings from file descriptor and update the globalConfig struct using pointers
  * @param {FILE*} File descriptor
- * @param {char*} char*data
+ * @param {char*} char*datayo
+ *
  * @param {struct globalConfig*} video configuration of the game
  * @return bool true if success
  */
