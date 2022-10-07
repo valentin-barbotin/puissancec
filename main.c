@@ -196,8 +196,14 @@ int main(int argc, char **argv) {
     char name[SIZE_DATA];
     char token1;
     char token2;
+    char token[5];
+
     puts("Entrer le nom du joueur 1");
+    fflush(stdin);
     fgets(name, SIZE_DATA, stdin);
+    puts("\nEntrer le symbole du joueur 1");
+    fflush(stdin);
+    fgets(token, 2, stdin);
     removeLineFeed(name);
     fflush(stdin);
     puts("Entrer le token du joueur 1");
@@ -212,6 +218,13 @@ int main(int argc, char **argv) {
     //TODO check si username valide
     //TODO check si username deja pris
     createUser(name,token1);
+    createUser(name, *token);
+    puts("\nEntrer le nom du joueur 2");
+    fflush(stdin);
+    fgets(name, SIZE_DATA, stdin);
+    puts("\nEntrer le symbole du joueur 2");
+    fflush(stdin);
+    fgets(token, 2, stdin);
 
     if (config.globalConfig.join) {
         main_client(&config);
@@ -238,6 +251,7 @@ int main(int argc, char **argv) {
         token2 = (char)fgetc(stdin);
         fflush(stdin);
     }
+    createUser(name, *token);
 
     createUser(name,token2);
 
@@ -247,15 +261,9 @@ int main(int argc, char **argv) {
     }
 
 
-    int rows = 6;
-    int columns = 7;
-
     char ** grille = NULL;
-
-    grille = init_grille(rows, columns);
-    print_all(grille, rows, columns);
-
-
+    grille = init_grille(&config);
     //tmp
-    startGame(users, &config);
+
+    startGame(users, &config, grille);
 }

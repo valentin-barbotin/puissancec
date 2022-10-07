@@ -69,6 +69,6 @@ User* createUser(char* name, char token) {
     strcpy(newName, name);
     users->users[users->size].token = token;
     users->users[users->size].name = newName;
-    users->size++;
-    return NULL;
+    users->users[users->size].token = token;
+    return &users->users[users->size++];
 };

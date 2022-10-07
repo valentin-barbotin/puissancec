@@ -88,3 +88,18 @@ char* removeSuffix(char* src, char* suffix) {
     *pos = '\0';
     return pos;
 }
+
+
+int nombreChiffres ( int nombre ){
+    int i = 1;
+    if (nombre < 0)
+    {
+        nombre = -nombre;
+    }
+    while (nombre >= 10)
+    {
+        nombre /= 10;
+        i++;
+    }
+    return i;
+}
